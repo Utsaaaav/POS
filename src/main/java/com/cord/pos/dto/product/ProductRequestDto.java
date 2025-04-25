@@ -1,5 +1,6 @@
 package com.cord.pos.dto.product;
 
+import com.cord.pos.entity.Category;
 import lombok.*;
 
 @Getter
@@ -11,6 +12,7 @@ import lombok.*;
 public class ProductRequestDto {
 
     private String name;
+    private String categoryName;
     private String price;
     private String taxRate;
 

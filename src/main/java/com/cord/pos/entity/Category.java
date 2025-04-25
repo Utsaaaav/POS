@@ -3,6 +3,8 @@ package com.cord.pos.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "categories_tbl")
 
@@ -22,5 +24,7 @@ public class Category {
     @Column(name = "category_name")
     private String categoryName;
 
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List<Product> products;
 
 }

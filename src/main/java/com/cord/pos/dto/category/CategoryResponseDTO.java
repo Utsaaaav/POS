@@ -12,5 +12,6 @@ public class CategoryResponseDTO {
 
     private long id;
     private String categoryName;
+    private int productCount;
 
 }

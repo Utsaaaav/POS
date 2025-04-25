@@ -30,7 +30,7 @@ public class StaffController extends BaseController{
         }
     }
 
-    @PutMapping("/list-staff")
+    @GetMapping("/list-staff")
     public ResponseEntity<GlobalApiResponse> list(){
         try{
             List<StaffResponseDTO> staffResponseDTO = staffService.getAllStaff();

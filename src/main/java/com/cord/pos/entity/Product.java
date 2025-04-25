@@ -29,4 +29,8 @@ public class Product {
     @Column(name = "tax_rate")
     private String taxRate;
 
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Category.class)
+    @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "FK_PRODUCT_CATEGORY"))
+    private Category category;
+
 }

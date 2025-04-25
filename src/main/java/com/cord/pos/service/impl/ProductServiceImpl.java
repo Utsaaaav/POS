@@ -2,7 +2,9 @@ package com.cord.pos.service.impl;
 
 import com.cord.pos.dto.product.ProductRequestDto;
 import com.cord.pos.dto.product.ProductResponseDTO;
+import com.cord.pos.entity.Category;
 import com.cord.pos.entity.Product;
+import com.cord.pos.repository.CategoryRepo;
 import com.cord.pos.repository.ProductRepo;
 import com.cord.pos.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +20,23 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepo productRepo;
 
+    private final CategoryRepo categoryRepo;
+
     @Override
     public ProductResponseDTO createProduct(ProductRequestDto productRequestDto) {
 
+
+        Category category = categoryRepo.findByCategoryName(productRequestDto.getCategoryName());
+
+        if(category == null){
+
+            throw new RuntimeException("Category not found with name " + productRequestDto.getCategoryName());
+
+        }
+
         Product product = Product.builder()
                 .name(productRequestDto.getName())
+                .category(category)
                 .price(productRequestDto.getPrice())
                 .taxRate(productRequestDto.getTaxRate())
                 .build();
@@ -31,6 +45,7 @@ public class ProductServiceImpl implements ProductService {
         ProductResponseDTO productResponseDTO = ProductResponseDTO.builder()
                 .id(product.getId())
                 .name(product.getName())
+                .categoryName(category.getCategoryName())
                 .price(product.getPrice())
                 .taxRate(product.getTaxRate())
                 .build();
@@ -48,6 +63,7 @@ public class ProductServiceImpl implements ProductService {
             ProductResponseDTO productResponsedto = ProductResponseDTO.builder()
                     .id(p.getId())
                     .name(p.getName())
+                    .categoryName(p.getCategory().getCategoryName())
                     .price(p.getPrice())
                     .taxRate(p.getTaxRate())
                     .build();
@@ -68,20 +84,28 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponseDTO updateProduct(long id, ProductRequestDto productRequestDTO) {
 
-        Product exProducts = productRepo.findById(id).orElseThrow(()-> new RuntimeException("Product not found with id "+ id));
-        exProducts.setName(productRequestDTO.getName());
-        exProducts.setPrice(productRequestDTO.getPrice());
-        exProducts.setTaxRate(productRequestDTO.getTaxRate());
+        Product existingProduct = productRepo.findById(id).orElseThrow(()-> new RuntimeException("Product not found with id "+ id));
 
-        productRepo.save(exProducts);
+        Category category = categoryRepo.findByCategoryName(productRequestDTO.getCategoryName());
+        if(category == null){
+            throw new RuntimeException("Category not found");
+        }
+
+        existingProduct.setName(productRequestDTO.getName());
+        existingProduct.setCategory(categoryRepo.findByCategoryName(productRequestDTO.getCategoryName()));
+        existingProduct.setPrice(productRequestDTO.getPrice());
+        existingProduct.setTaxRate(productRequestDTO.getTaxRate());
+
+        productRepo.save(existingProduct);
 
         ProductResponseDTO productResponseDTO = ProductResponseDTO.builder()
-                .id(exProducts.getId())
+                .id(existingProduct.getId())
                 .name(productRequestDTO.getName())
+                .categoryName(existingProduct.getCategory().getCategoryName())
                 .price(productRequestDTO.getPrice())
                 .taxRate(productRequestDTO.getTaxRate())
                 .build();
 
         return productResponseDTO;
-    }
+   }
 }

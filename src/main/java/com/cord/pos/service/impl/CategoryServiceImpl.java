@@ -8,6 +8,7 @@ import com.cord.pos.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,16 +36,44 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryResponseDTO> getAllCategory() {
-        return List.of();
+        List<Category> categories = categoryRepo.findAll();
+        List<CategoryResponseDTO> categoryResponseDTO = new ArrayList<>();
+        for(Category c : categories){
+
+            CategoryResponseDTO categoryResponsedto = CategoryResponseDTO.builder()
+                    .id(c.getId())
+                    .categoryName(c.getCategoryName())
+                    .productCount(c.getProducts().size())
+                    .build();
+
+            categoryResponseDTO.add(categoryResponsedto);
+        }
+
+        return categoryResponseDTO;
+
     }
 
     @Override
     public void deleteCategory(long id) {
 
+        Category category = categoryRepo.findById(id).orElseThrow(() -> new RuntimeException("Catagory not found with id " +id));
+        categoryRepo.delete(category);
+
     }
 
     @Override
     public CategoryResponseDTO updateCategory(long id, CategoryRequestDTO categoryRequestDTO) {
-        return null;
+
+       Category exCategory = categoryRepo.findById(id).orElseThrow(() -> new RuntimeException("Category not found with id "+id));
+       exCategory.setCategoryName(categoryRequestDTO.getCategoryName());
+
+       categoryRepo.save(exCategory);
+
+       CategoryResponseDTO categoryResponseDTO = CategoryResponseDTO.builder()
+               .id(exCategory.getId())
+               .categoryName(categoryRequestDTO.getCategoryName())
+               .build();
+
+        return categoryResponseDTO;
     }
 }
