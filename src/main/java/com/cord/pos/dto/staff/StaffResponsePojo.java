@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 
-public class StaffResponseDTO {
+public class StaffResponsePojo {
 
     private long id;
     private String fullName;

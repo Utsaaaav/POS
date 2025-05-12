@@ -1,7 +1,7 @@
 package com.cord.pos.service;
 
-import com.cord.pos.dto.customer.CustomerRequestDTO;
-import com.cord.pos.dto.customer.CustomerResponseDTO;
+import com.cord.pos.dto.customer.CustomerRequestPojo;
+import com.cord.pos.dto.customer.CustomerResponsePojo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,12 +9,12 @@ import java.util.List;
 @Component
 public interface CustomerService {
 
-    CustomerResponseDTO create(CustomerRequestDTO customerRequestDTO);
+    CustomerResponsePojo create(CustomerRequestPojo customerRequestPojo);
 
-    List<CustomerResponseDTO> findAllCustomers();
+    List<CustomerResponsePojo> findAllCustomers();
 
     void delete(long id);
 
-    CustomerResponseDTO update(long id, CustomerRequestDTO customerRequestDTO);
+    CustomerResponsePojo update(long id, CustomerRequestPojo customerRequestPojo);
 
 }

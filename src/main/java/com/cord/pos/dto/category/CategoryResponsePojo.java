@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class CategoryResponseDTO {
+public class CategoryResponsePojo {
 
     private long id;
     private String categoryName;

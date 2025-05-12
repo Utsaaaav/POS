@@ -1,7 +1,7 @@
 package com.cord.pos.service.impl;
 
-import com.cord.pos.dto.category.CategoryRequestDTO;
-import com.cord.pos.dto.category.CategoryResponseDTO;
+import com.cord.pos.dto.category.CategoryRequestPojo;
+import com.cord.pos.dto.category.CategoryResponsePojo;
 import com.cord.pos.entity.Category;
 import com.cord.pos.repository.CategoryRepo;
 import com.cord.pos.service.CategoryService;
@@ -18,38 +18,38 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepo categoryRepo;
 
     @Override
-    public CategoryResponseDTO createCategory(CategoryRequestDTO categoryRequestDTO) {
+    public CategoryResponsePojo createCategory(CategoryRequestPojo categoryRequestPojo) {
 
         Category category = Category.builder()
-                .categoryName(categoryRequestDTO.getCategoryName())
+                .categoryName(categoryRequestPojo.getCategoryName())
                 .build();
 
         categoryRepo.save(category);
 
-        CategoryResponseDTO categoryResponseDTO = CategoryResponseDTO.builder()
+        CategoryResponsePojo categoryResponsePojo = CategoryResponsePojo.builder()
                 .id(category.getId())
-                .categoryName(categoryRequestDTO.getCategoryName())
+                .categoryName(categoryRequestPojo.getCategoryName())
                 .build();
 
-        return categoryResponseDTO;
+        return categoryResponsePojo;
     }
 
     @Override
-    public List<CategoryResponseDTO> getAllCategory() {
+    public List<CategoryResponsePojo> getAllCategory() {
         List<Category> categories = categoryRepo.findAll();
-        List<CategoryResponseDTO> categoryResponseDTO = new ArrayList<>();
+        List<CategoryResponsePojo> categoryResponsePojo = new ArrayList<>();
         for(Category c : categories){
 
-            CategoryResponseDTO categoryResponsedto = CategoryResponseDTO.builder()
+            CategoryResponsePojo categoryResponsedto = CategoryResponsePojo.builder()
                     .id(c.getId())
                     .categoryName(c.getCategoryName())
                     .productCount(c.getProducts().size())
                     .build();
 
-            categoryResponseDTO.add(categoryResponsedto);
+            categoryResponsePojo.add(categoryResponsedto);
         }
 
-        return categoryResponseDTO;
+        return categoryResponsePojo;
 
     }
 
@@ -62,18 +62,18 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryResponseDTO updateCategory(long id, CategoryRequestDTO categoryRequestDTO) {
+    public CategoryResponsePojo updateCategory(long id, CategoryRequestPojo categoryRequestPojo) {
 
        Category exCategory = categoryRepo.findById(id).orElseThrow(() -> new RuntimeException("Category not found with id "+id));
-       exCategory.setCategoryName(categoryRequestDTO.getCategoryName());
+       exCategory.setCategoryName(categoryRequestPojo.getCategoryName());
 
        categoryRepo.save(exCategory);
 
-       CategoryResponseDTO categoryResponseDTO = CategoryResponseDTO.builder()
+       CategoryResponsePojo categoryResponsePojo = CategoryResponsePojo.builder()
                .id(exCategory.getId())
-               .categoryName(categoryRequestDTO.getCategoryName())
+               .categoryName(categoryRequestPojo.getCategoryName())
                .build();
 
-        return categoryResponseDTO;
+        return categoryResponsePojo;
     }
 }

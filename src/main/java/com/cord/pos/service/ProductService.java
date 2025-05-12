@@ -1,7 +1,7 @@
 package com.cord.pos.service;
 
-import com.cord.pos.dto.product.ProductRequestDto;
-import com.cord.pos.dto.product.ProductResponseDTO;
+import com.cord.pos.dto.product.ProductRequestPojo;
+import com.cord.pos.dto.product.ProductResponsePojo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,12 +9,12 @@ import java.util.List;
 @Component
 public interface ProductService {
 
-    ProductResponseDTO createProduct(ProductRequestDto productRequestDto);
+    ProductResponsePojo createProduct(ProductRequestPojo productRequestPojo);
 
-    List<ProductResponseDTO> findAllProduct();
+    List<ProductResponsePojo> findAllProduct();
 
     void deleteProduct(long id);
 
-    ProductResponseDTO updateProduct(long id, ProductRequestDto productRequestDTO);
+    ProductResponsePojo updateProduct(long id, ProductRequestPojo productRequestPojo);
 
 }

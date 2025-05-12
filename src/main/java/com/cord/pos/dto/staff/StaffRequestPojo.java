@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 
-public class StaffRequestDTO {
+public class StaffRequestPojo {
 
     private String fullName;
     private String email;

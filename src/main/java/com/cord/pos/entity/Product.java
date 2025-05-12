@@ -18,6 +18,7 @@ public class Product {
     @Id
     @SequenceGenerator(name = "tbl_product_id_name", allocationSize = 1,initialValue = 1, sequenceName ="tbl_product_id_name")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_product_id_name")
+    @Column(name = "product_id")
     private long id;
 
     @Column(name = "product_name")

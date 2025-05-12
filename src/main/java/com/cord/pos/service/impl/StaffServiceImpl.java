@@ -1,12 +1,10 @@
 package com.cord.pos.service.impl;
 
-import com.cord.pos.dto.staff.StaffRequestDTO;
-import com.cord.pos.dto.staff.StaffResponseDTO;
+import com.cord.pos.dto.staff.StaffRequestPojo;
+import com.cord.pos.dto.staff.StaffResponsePojo;
 import com.cord.pos.entity.Staff;
-import com.cord.pos.enums.Status;
 import com.cord.pos.repository.StaffRepo;
 import com.cord.pos.service.StaffService;
-import jakarta.persistence.Table;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,39 +19,39 @@ public class StaffServiceImpl implements StaffService {
     private final StaffRepo staffRepo;
 
     @Override
-    public StaffResponseDTO createStaff(StaffRequestDTO staffRequestDTO) {
+    public StaffResponsePojo createStaff(StaffRequestPojo staffRequestPojo) {
 
         Staff staff = Staff.builder()
-                .fullName(staffRequestDTO.getFullName())
-                .email(staffRequestDTO.getEmail())
-                .phoneNumber(staffRequestDTO.getPhoneNumber())
-                .role(staffRequestDTO.getRole())
-                .status(staffRequestDTO.getStatus())
-                .joinDate(staffRequestDTO.getJoinDate())
+                .fullName(staffRequestPojo.getFullName())
+                .email(staffRequestPojo.getEmail())
+                .phoneNumber(staffRequestPojo.getPhoneNumber())
+                .role(staffRequestPojo.getRole())
+                .status(staffRequestPojo.getStatus())
+                .joinDate(staffRequestPojo.getJoinDate())
                 .build();
 
         staffRepo.save(staff);
 
-        StaffResponseDTO staffResponseDTO = StaffResponseDTO.builder()
+        StaffResponsePojo staffResponsePojo = StaffResponsePojo.builder()
                 .id(staff.getId())
-                .fullName(staffRequestDTO.getFullName())
-                .email(staffRequestDTO.getEmail())
-                .phoneNumber(staffRequestDTO.getPhoneNumber())
-                .role(staffRequestDTO.getRole())
+                .fullName(staffRequestPojo.getFullName())
+                .email(staffRequestPojo.getEmail())
+                .phoneNumber(staffRequestPojo.getPhoneNumber())
+                .role(staffRequestPojo.getRole())
                 .status(staff.getStatus())
-                .joinDate(staffRequestDTO.getJoinDate())
+                .joinDate(staffRequestPojo.getJoinDate())
                 .build();
 
-        return staffResponseDTO;
+        return staffResponsePojo;
     }
 
     @Override
-    public List<StaffResponseDTO> getAllStaff() {
+    public List<StaffResponsePojo> getAllStaff() {
 
         List<Staff> staff = staffRepo.findAll();
-        List<StaffResponseDTO> staffResponseDto = new ArrayList<>();
+        List<StaffResponsePojo> staffResponsePojo = new ArrayList<>();
         for (Staff s : staff){
-            StaffResponseDTO staffResponseDTO = StaffResponseDTO.builder()
+            StaffResponsePojo staffResponsePojo = StaffResponsePojo.builder()
                     .id(s.getId())
                     .fullName(s.getFullName())
                     .email(s.getEmail())
@@ -63,9 +61,9 @@ public class StaffServiceImpl implements StaffService {
                     .joinDate(s.getJoinDate())
                     .build();
 
-            staffResponseDto.add(staffResponseDTO);
+            staffResponsePojo.add(staffResponsePojo);
         }
-        return staffResponseDto;
+        return staffResponsePojo;
     }
 
     @Override
@@ -77,26 +75,26 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public StaffResponseDTO updateStaff(long id, StaffRequestDTO staffRequestDTO) {
+    public StaffResponsePojo updateStaff(long id, StaffRequestPojo staffRequestPojo) {
 
         Staff exStaff = staffRepo.findById(id).orElseThrow(() -> new RuntimeException("Staff not found with id "+id));
-        exStaff.setFullName(staffRequestDTO.getFullName());
-        exStaff.setEmail(staffRequestDTO.getEmail());
-        exStaff.setPhoneNumber(staffRequestDTO.getPhoneNumber());
-        exStaff.setRole(staffRequestDTO.getRole());
-        exStaff.setStatus(staffRequestDTO.getStatus());
-        exStaff.setJoinDate(staffRequestDTO.getJoinDate());
+        exStaff.setFullName(staffRequestPojo.getFullName());
+        exStaff.setEmail(staffRequestPojo.getEmail());
+        exStaff.setPhoneNumber(staffRequestPojo.getPhoneNumber());
+        exStaff.setRole(staffRequestPojo.getRole());
+        exStaff.setStatus(staffRequestPojo.getStatus());
+        exStaff.setJoinDate(staffRequestPojo.getJoinDate());
 
         staffRepo.save(exStaff);
 
-        StaffResponseDTO responseDTO = StaffResponseDTO.builder()
+        StaffResponsePojo responseDTO = StaffResponsePojo.builder()
                 .id(exStaff.getId())
-                .fullName(staffRequestDTO.getFullName())
-                .email(staffRequestDTO.getEmail())
-                .phoneNumber(staffRequestDTO.getPhoneNumber())
-                .role(staffRequestDTO.getRole())
-                .status(staffRequestDTO.getStatus())
-                .joinDate(staffRequestDTO.getJoinDate())
+                .fullName(staffRequestPojo.getFullName())
+                .email(staffRequestPojo.getEmail())
+                .phoneNumber(staffRequestPojo.getPhoneNumber())
+                .role(staffRequestPojo.getRole())
+                .status(staffRequestPojo.getStatus())
+                .joinDate(staffRequestPojo.getJoinDate())
                 .build();
 
         return responseDTO;

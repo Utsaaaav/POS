@@ -18,6 +18,7 @@ public class Customer {
     @Id
     @SequenceGenerator(sequenceName = "tbl_customer_id_seq", allocationSize = 1, initialValue = 1, name = "tbl_customer_id_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "tbl_customer_id_seq")
+    @Column(name = "customer_id")
     private long id;
 
     @Column(name = "full_name")

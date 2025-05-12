@@ -1,7 +1,7 @@
 package com.cord.pos.service;
 
-import com.cord.pos.dto.staff.StaffRequestDTO;
-import com.cord.pos.dto.staff.StaffResponseDTO;
+import com.cord.pos.dto.staff.StaffRequestPojo;
+import com.cord.pos.dto.staff.StaffResponsePojo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,12 +9,12 @@ import java.util.List;
 @Component
 public interface StaffService {
 
-    StaffResponseDTO createStaff(StaffRequestDTO staffRequestDTO);
+    StaffResponsePojo createStaff(StaffRequestPojo staffRequestPojo);
 
-    List<StaffResponseDTO> getAllStaff();
+    List<StaffResponsePojo> getAllStaff();
 
     void deleteStaff(long id);
 
-    StaffResponseDTO updateStaff(long id, StaffRequestDTO staffRequestDTO);
+    StaffResponsePojo updateStaff(long id, StaffRequestPojo staffRequestPojo);
 
 }

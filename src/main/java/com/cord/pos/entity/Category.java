@@ -19,6 +19,7 @@ public class Category {
     @Id
     @SequenceGenerator(name = "tbl_categories_id_seq", initialValue = 1, allocationSize = 1, sequenceName = "tbl_categories_id_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_categories_id_seq")
+    @Column(name = "category_id")
     private long id;
 
     @Column(name = "category_name")

@@ -21,6 +21,7 @@ public class Staff {
     @Id
     @SequenceGenerator(sequenceName = "tbl_staff_id_seq", initialValue = 1, allocationSize = 1, name ="tbl_staff_id_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_staff_id_seq")
+    @Column(name = "staff_id")
     private long id;
 
     @Column(name = "full_name")

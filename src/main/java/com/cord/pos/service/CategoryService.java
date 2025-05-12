@@ -1,7 +1,7 @@
 package com.cord.pos.service;
 
-import com.cord.pos.dto.category.CategoryRequestDTO;
-import com.cord.pos.dto.category.CategoryResponseDTO;
+import com.cord.pos.dto.category.CategoryRequestPojo;
+import com.cord.pos.dto.category.CategoryResponsePojo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,12 +9,12 @@ import java.util.List;
 @Component
 public interface CategoryService {
 
-    CategoryResponseDTO createCategory(CategoryRequestDTO categoryRequestDTO);
+    CategoryResponsePojo createCategory(CategoryRequestPojo categoryRequestPojo);
 
-    List<CategoryResponseDTO> getAllCategory();
+    List<CategoryResponsePojo> getAllCategory();
 
     void deleteCategory(long id);
 
-    CategoryResponseDTO updateCategory(long id, CategoryRequestDTO categoryRequestDTO);
+    CategoryResponsePojo updateCategory(long id, CategoryRequestPojo categoryRequestPojo);
 
 }

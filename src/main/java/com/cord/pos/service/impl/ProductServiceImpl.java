@@ -1,7 +1,7 @@
 package com.cord.pos.service.impl;
 
-import com.cord.pos.dto.product.ProductRequestDto;
-import com.cord.pos.dto.product.ProductResponseDTO;
+import com.cord.pos.dto.product.ProductRequestPojo;
+import com.cord.pos.dto.product.ProductResponsePojo;
 import com.cord.pos.entity.Category;
 import com.cord.pos.entity.Product;
 import com.cord.pos.repository.CategoryRepo;
@@ -23,26 +23,32 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepo categoryRepo;
 
     @Override
-    public ProductResponseDTO createProduct(ProductRequestDto productRequestDto) {
+    public ProductResponsePojo createProduct(ProductRequestPojo productRequestPojo) {
 
 
-        Category category = categoryRepo.findByCategoryName(productRequestDto.getCategoryName());
+        Category category = categoryRepo.findByCategoryName(productRequestPojo.getCategoryName());
 
         if(category == null){
-
-            throw new RuntimeException("Category not found with name " + productRequestDto.getCategoryName());
+            category = categoryRepo.findByCategoryName("Uncategorized");
+            if(category == null){
+                category = Category.builder()
+                        .categoryName("Uncategorized")
+                        .build();
+            }
+            categoryRepo.save(category);
+//            throw new RuntimeException("Category not found with name " + productRequestDto.getCategoryName());
 
         }
 
         Product product = Product.builder()
-                .name(productRequestDto.getName())
+                .name(productRequestPojo.getName())
                 .category(category)
-                .price(productRequestDto.getPrice())
-                .taxRate(productRequestDto.getTaxRate())
+                .price(productRequestPojo.getPrice())
+                .taxRate(productRequestPojo.getTaxRate())
                 .build();
         productRepo.save(product);
 
-        ProductResponseDTO productResponseDTO = ProductResponseDTO.builder()
+        ProductResponsePojo productResponsePojo = ProductResponsePojo.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .categoryName(category.getCategoryName())
@@ -50,17 +56,17 @@ public class ProductServiceImpl implements ProductService {
                 .taxRate(product.getTaxRate())
                 .build();
 
-        return productResponseDTO;
+        return productResponsePojo;
     }
 
     @Override
-    public List<ProductResponseDTO> findAllProduct() {
+    public List<ProductResponsePojo> findAllProduct() {
 
         List<Product> product = productRepo.findAll();
-        List<ProductResponseDTO> productResponseDTO = new ArrayList<>();
+        List<ProductResponsePojo> productResponsePojo = new ArrayList<>();
         for(Product p: product){
 
-            ProductResponseDTO productResponsedto = ProductResponseDTO.builder()
+            ProductResponsePojo productResponsedto = ProductResponsePojo.builder()
                     .id(p.getId())
                     .name(p.getName())
                     .categoryName(p.getCategory().getCategoryName())
@@ -68,9 +74,9 @@ public class ProductServiceImpl implements ProductService {
                     .taxRate(p.getTaxRate())
                     .build();
 
-            productResponseDTO.add(productResponsedto);
+            productResponsePojo.add(productResponsedto);
         }
-        return productResponseDTO;
+        return productResponsePojo;
     }
 
     @Override
@@ -82,30 +88,30 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponseDTO updateProduct(long id, ProductRequestDto productRequestDTO) {
+    public ProductResponsePojo updateProduct(long id, ProductRequestPojo productRequestPojo) {
 
         Product existingProduct = productRepo.findById(id).orElseThrow(()-> new RuntimeException("Product not found with id "+ id));
 
-        Category category = categoryRepo.findByCategoryName(productRequestDTO.getCategoryName());
-        if(category == null){
+        Category category = categoryRepo.findByCategoryName(productRequestPojo.getCategoryName());
+        if(category == null ){
             throw new RuntimeException("Category not found");
         }
 
-        existingProduct.setName(productRequestDTO.getName());
-        existingProduct.setCategory(categoryRepo.findByCategoryName(productRequestDTO.getCategoryName()));
-        existingProduct.setPrice(productRequestDTO.getPrice());
-        existingProduct.setTaxRate(productRequestDTO.getTaxRate());
+        existingProduct.setName(productRequestPojo.getName());
+        existingProduct.setCategory(categoryRepo.findByCategoryName(productRequestPojo.getCategoryName()));
+        existingProduct.setPrice(productRequestPojo.getPrice());
+        existingProduct.setTaxRate(productRequestPojo.getTaxRate());
 
         productRepo.save(existingProduct);
 
-        ProductResponseDTO productResponseDTO = ProductResponseDTO.builder()
+        ProductResponsePojo productResponsePojo = ProductResponsePojo.builder()
                 .id(existingProduct.getId())
-                .name(productRequestDTO.getName())
+                .name(productRequestPojo.getName())
                 .categoryName(existingProduct.getCategory().getCategoryName())
-                .price(productRequestDTO.getPrice())
-                .taxRate(productRequestDTO.getTaxRate())
+                .price(productRequestPojo.getPrice())
+                .taxRate(productRequestPojo.getTaxRate())
                 .build();
 
-        return productResponseDTO;
+        return productResponsePojo;
    }
 }

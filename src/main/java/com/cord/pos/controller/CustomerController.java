@@ -1,7 +1,7 @@
 package com.cord.pos.controller;
 
-import com.cord.pos.dto.customer.CustomerRequestDTO;
-import com.cord.pos.dto.customer.CustomerResponseDTO;
+import com.cord.pos.dto.customer.CustomerRequestPojo;
+import com.cord.pos.dto.customer.CustomerResponsePojo;
 import com.cord.pos.dto.GlobalApiResponse;
 import com.cord.pos.service.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +20,10 @@ public class CustomerController extends BaseController{
     private final CustomerService customerService;
 
     @PostMapping("/create-customer")
-    public ResponseEntity<GlobalApiResponse> createCustomer(@RequestBody CustomerRequestDTO customerDTO){
+    public ResponseEntity<GlobalApiResponse> createCustomer(@RequestBody CustomerRequestPojo customerDTO){
         try{
-            CustomerResponseDTO customerResponseDTO = customerService.create(customerDTO);
-            return new ResponseEntity<>(successResponse("Customer created successfully", customerResponseDTO), HttpStatus.OK);
+            CustomerResponsePojo customerResponsePojo = customerService.create(customerDTO);
+            return new ResponseEntity<>(successResponse("Customer created successfully", customerResponsePojo), HttpStatus.OK);
         }
         catch (Exception e){
             return new ResponseEntity<>(failureResponse(e.getMessage(), null),HttpStatus.INTERNAL_SERVER_ERROR);
@@ -33,8 +33,8 @@ public class CustomerController extends BaseController{
     @GetMapping("/list-customer")
     public ResponseEntity<GlobalApiResponse> listCustomers(){
         try {
-             List<CustomerResponseDTO> customerResponseDTO = customerService.findAllCustomers();
-             return new ResponseEntity<>(successResponse("Customer Listed Successfully", customerResponseDTO), HttpStatus.OK);
+             List<CustomerResponsePojo> customerResponsePojo = customerService.findAllCustomers();
+             return new ResponseEntity<>(successResponse("Customer Listed Successfully", customerResponsePojo), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(failureResponse(e.getMessage(),null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -48,8 +48,8 @@ public class CustomerController extends BaseController{
     }
 
     @PutMapping("/update-customer/{id}")
-    public ResponseEntity<GlobalApiResponse> update(@PathVariable long id, @RequestBody CustomerRequestDTO customerRequestDTO){
-        CustomerResponseDTO customerResponseDTO = customerService.update(id, customerRequestDTO);
-        return new ResponseEntity<>(successResponse("Customer Updated successfully", customerResponseDTO),HttpStatus.OK);
+    public ResponseEntity<GlobalApiResponse> update(@PathVariable long id, @RequestBody CustomerRequestPojo customerRequestPojo){
+        CustomerResponsePojo customerResponsePojo = customerService.update(id, customerRequestPojo);
+        return new ResponseEntity<>(successResponse("Customer Updated successfully", customerResponsePojo),HttpStatus.OK);
     }
 }

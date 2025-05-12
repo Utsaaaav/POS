@@ -1,7 +1,7 @@
 package com.cord.pos.service.impl;
 
-import com.cord.pos.dto.customer.CustomerRequestDTO;
-import com.cord.pos.dto.customer.CustomerResponseDTO;
+import com.cord.pos.dto.customer.CustomerRequestPojo;
+import com.cord.pos.dto.customer.CustomerResponsePojo;
 import com.cord.pos.entity.Customer;
 import com.cord.pos.repository.CustomerRepo;
 import com.cord.pos.service.CustomerService;
@@ -18,39 +18,39 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepo customerRepo;
 
     @Override
-    public CustomerResponseDTO create(CustomerRequestDTO customerRequestDTO) {
+    public CustomerResponsePojo create(CustomerRequestPojo customerRequestPojo) {
 
        Customer customer = Customer.builder()
-               .fullName(customerRequestDTO.getFullName())
-               .email(customerRequestDTO.getEmail())
-               .phoneNumber(customerRequestDTO.getPhone())
-               .initialDiscount(customerRequestDTO.getInitialDiscount())
-               .customerType(customerRequestDTO.getCustomerType())
+               .fullName(customerRequestPojo.getFullName())
+               .email(customerRequestPojo.getEmail())
+               .phoneNumber(customerRequestPojo.getPhone())
+               .initialDiscount(customerRequestPojo.getInitialDiscount())
+               .customerType(customerRequestPojo.getCustomerType())
                .build();
 
        customerRepo.save(customer);
 
-       CustomerResponseDTO customerResponseDTO = CustomerResponseDTO.builder()
+       CustomerResponsePojo customerResponsePojo = CustomerResponsePojo.builder()
                .id(customer.getId())
-               .fullName(customerRequestDTO.getFullName())
-               .email(customerRequestDTO.getEmail())
-               .phone(customerRequestDTO.getPhone())
-               .initialDiscount(customerRequestDTO.getInitialDiscount())
-               .customerType(customerRequestDTO.getCustomerType())
+               .fullName(customerRequestPojo.getFullName())
+               .email(customerRequestPojo.getEmail())
+               .phone(customerRequestPojo.getPhone())
+               .initialDiscount(customerRequestPojo.getInitialDiscount())
+               .customerType(customerRequestPojo.getCustomerType())
                .build();
 
-       return customerResponseDTO;
+       return customerResponsePojo;
 
     }
 
     @Override
-    public List<CustomerResponseDTO> findAllCustomers() {
+    public List<CustomerResponsePojo> findAllCustomers() {
         List<Customer> customer = customerRepo.findAll();
-        List<CustomerResponseDTO> customerResponseDTO = new ArrayList<>();
+        List<CustomerResponsePojo> customerResponsePojo = new ArrayList<>();
 
         for(Customer c : customer){
 
-            CustomerResponseDTO customerDTO = CustomerResponseDTO.builder()
+            CustomerResponsePojo customerDTO = CustomerResponsePojo.builder()
                     .id(c.getId())
                     .fullName(c.getFullName())
                     .email(c.getEmail())
@@ -59,10 +59,10 @@ public class CustomerServiceImpl implements CustomerService {
                     .customerType(c.getCustomerType())
                     .build();
 
-            customerResponseDTO.add(customerDTO);
+            customerResponsePojo.add(customerDTO);
         }
 
-        return customerResponseDTO;
+        return customerResponsePojo;
 
     }
 
@@ -75,27 +75,27 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerResponseDTO update(long id, CustomerRequestDTO customerRequestDTO) {
+    public CustomerResponsePojo update(long id, CustomerRequestPojo customerRequestPojo) {
 
         Customer exCustomer = customerRepo.findById(id).orElseThrow(() -> new RuntimeException("Customer not found with id : "+id));
-        exCustomer.setFullName(customerRequestDTO.getFullName());
-        exCustomer.setEmail(customerRequestDTO.getEmail());
-        exCustomer.setPhoneNumber(customerRequestDTO.getPhone());
-        exCustomer.setInitialDiscount(customerRequestDTO.getInitialDiscount());
-        exCustomer.setCustomerType(customerRequestDTO.getCustomerType());
+        exCustomer.setFullName(customerRequestPojo.getFullName());
+        exCustomer.setEmail(customerRequestPojo.getEmail());
+        exCustomer.setPhoneNumber(customerRequestPojo.getPhone());
+        exCustomer.setInitialDiscount(customerRequestPojo.getInitialDiscount());
+        exCustomer.setCustomerType(customerRequestPojo.getCustomerType());
 
         customerRepo.save(exCustomer);
 
-        CustomerResponseDTO customerResponseDTO = CustomerResponseDTO.builder()
+        CustomerResponsePojo customerResponsePojo = CustomerResponsePojo.builder()
                 .id(exCustomer.getId())
-                .fullName(customerRequestDTO.getFullName())
-                .email(customerRequestDTO.getEmail())
-                .phone(customerRequestDTO.getPhone())
-                .initialDiscount(customerRequestDTO.getInitialDiscount())
-                .customerType(customerRequestDTO.getCustomerType())
+                .fullName(customerRequestPojo.getFullName())
+                .email(customerRequestPojo.getEmail())
+                .phone(customerRequestPojo.getPhone())
+                .initialDiscount(customerRequestPojo.getInitialDiscount())
+                .customerType(customerRequestPojo.getCustomerType())
                 .build();
 
-        return customerResponseDTO;
+        return customerResponsePojo;
 
     }
 }
